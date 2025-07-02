@@ -19,7 +19,7 @@ This project contains automated and manual test cases for the BBC News commentin
    ```
 3. Test Execution and Cucumber Report Generation:
    ```bash
-   npm test-cucumber
+   npm run test-cucumber
    ```
 
 ## Project Structure
