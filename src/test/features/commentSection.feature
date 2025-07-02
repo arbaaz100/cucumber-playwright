@@ -5,7 +5,7 @@ Feature: BBC News Comment Section
     Given I open the BBC homepage
     When I navigate the BBC Homepage until I find an article with comments enabled
     Then I should see the comment section
-    Then I find and click the sign-in button and Log in
+    Then I find and click the sign-in button and Log in as 'Arbaaz'
     And The comment section should be loaded and functional
 
   @automated
