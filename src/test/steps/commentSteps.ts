@@ -17,7 +17,7 @@ When('I navigate to the article {string}', async function (this: CustomWorld, ur
   await articlePage.navigateTo(url);
 });
 
-When('I navigate the BBC Homepage until I find an article with comments enabled', {timeout: 2 * 20000}, async function (this: CustomWorld) {
+When('I navigate the BBC Homepage until I find an article with comments enabled and I open the article', {timeout: 2 * 20000}, async function (this: CustomWorld) {
   if (!this.page) {
     throw new Error('Page is not initialized');
   }
@@ -64,7 +64,7 @@ Then('I should not see the comment section', async function (this: CustomWorld) 
   expect(isPresent).toBeFalsy();
 });
 
-Then('The comment section should be loaded and functional', {timeout: 2 * 20000}, async function (this: CustomWorld) {
+Then('The comment section should be visible and interactive', {timeout: 2 * 20000}, async function (this: CustomWorld) {
   const page = this.page;
   if (!page) {
     throw new Error('Page is not initialized');
@@ -74,7 +74,7 @@ Then('The comment section should be loaded and functional', {timeout: 2 * 20000}
   expect(isCommentSectionReady, 'Comment section should be loaded and functional').toBe(true);
 });
 
-Then('I should not be able to post a comment without signing in', async function (this: CustomWorld) {
+Then('The comment input field should be disabled and I should not be able to post a comment without signing in', async function (this: CustomWorld) {
   const page = this.page;
   if (!page) {
     throw new Error('Page is not initialized');

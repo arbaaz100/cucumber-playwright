@@ -5,7 +5,8 @@
   "scripts": {
     "test": "cucumber-js test",
     "generate-report": "ts-node generate-report.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "test-cucumber": "npm test && npm run generate-report"
   },
   "keywords": [],
   "author": "arbaazkhan",
