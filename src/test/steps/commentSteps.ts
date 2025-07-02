@@ -2,7 +2,8 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { ArticlePage } from '../../pages/ArticlePage';
 import { LoginPage } from '../../pages/LoginPage';
 import { expect } from '@playwright/test';
-import { CustomWorld } from '../../fixtures/hooks'; // Import the CustomWorld
+import { CustomWorld } from '../../fixtures/hooks';
+import { UserType, getUserCredentials } from '../../userCredentials/userCredentials';
 
 let articlePage: ArticlePage;
 let loginPage: LoginPage;
@@ -85,19 +86,39 @@ Then('I should not be able to post a comment without signing in', async function
 
 });
 
-Given('I find and click the sign-in button and Log in', {timeout: 2 * 20000}, async function (this: CustomWorld) {
+Given('I find and click the sign-in button and Log in as {string}', {timeout: 2 * 20000}, async function (this: CustomWorld, userTypeString: string) {
   const page = this.page;
   if (!page) {
     throw new Error('Page is not initialized');
   }
 
-  // Assuming you have a LoginPage class instance
-  loginPage = new LoginPage(page);
-  
-  const success = await articlePage.findAndClickSignInButton();
-  expect(success, 'Should find sign-in button and complete login successfully').toBe(true);
+  // Convert string to enum (case-insensitive)
+  const userType = Object.values(UserType).find(type => 
+    type.toLowerCase() === userTypeString.toLowerCase()
+  ) as UserType;
 
-  // Perform login steps
-  const isLoggedIn = await loginPage.handleLogin();
-  expect(isLoggedIn).toBe(true);
+  if (!userType) {
+    throw new Error(`Invalid user type: ${userTypeString}. Valid types: ${Object.values(UserType).join(', ')}`);
+  }
+
+  console.log(`Attempting to log in as user type: ${userType}`);
+
+  const userCredentials = getUserCredentials(userType);
+  const loginPage = new LoginPage(page);
+  const articlePage = new ArticlePage(page);
+
+  // Find and click sign-in button
+  const signInSuccess = await articlePage.findAndClickSignInButton();
+  expect(signInSuccess, `Should find and click sign-in button for user ${userType}`).toBe(true);
+
+  // Perform login
+  const loginResult = await loginPage.performLogin({
+    email: userCredentials.email,
+    password: userCredentials.password
+  });
+
+  expect(loginResult.success, `Login should succeed for user ${userType}. Error: ${loginResult.error || 'Unknown error'}`).toBe(true);
+  
+  console.log(`✅ Successfully logged in as ${userCredentials.displayName}`);
 });
+
