@@ -10,6 +10,7 @@ export class ArticlePage {
   private readonly page: Page;
   private readonly selectors = {
     commentIcon: '[data-testid="participate:comments"]',
+    commentSection: '[data-testid="comments-container"]',
     commentTextarea: 'textarea[placeholder="Add your comment..."]',
     sectionHeading: '#section-heading',
     sectionTitle: '#section-title',
@@ -59,7 +60,11 @@ export class ArticlePage {
   }
 
   async isCommentSectionPresent(): Promise<boolean> {
-    return this.isCommentIconPresent();
+    try {
+      return await this.page.locator(this.selectors.commentSection).isVisible();
+    } catch {
+      return false;
+    }
   }
 
   async verifyCommentSectionLoaded(timeout: number = this.constants.defaultTimeout): Promise<boolean> {

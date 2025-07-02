@@ -1,10 +1,8 @@
 import { Given } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { CustomWorld } from '../../fixtures/hooks'; // Import the CustomWorld
+import { CustomWorld } from '../../fixtures/hooks';
 import { LoginPage } from '../../pages/LoginPage';
 
-// Removed unused outer loginPage declaration to avoid shadowing
-let loginPage: LoginPage;
 
 Given('I open the BBC homepage', { timeout: 2 * 20000 }, async function (this: CustomWorld) {
     const page = this.page;
@@ -14,7 +12,7 @@ Given('I open the BBC homepage', { timeout: 2 * 20000 }, async function (this: C
 
     const loginPage = new LoginPage(page);
     await page.goto('https://www.bbc.co.uk');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
     console.log('BBC homepage opened successfully');
 
     await loginPage.handleTermsAndConditionsBanner();
@@ -38,6 +36,4 @@ Given('I am logged in to BBC', { timeout: 2 * 20000 }, async function (this: Cus
     await loginPage.clickSignInButton();
     const isLoggedIn = await loginPage.handleLogin();
     expect(isLoggedIn).toBe(true);
-
-  
 });

@@ -44,14 +44,13 @@ When('I navigate the BBC Homepage until I find an article with comments enabled 
           const firstArticle = this.page.locator('[data-testid="participate:comments"]').first();
           await firstArticle.click();
           await this.page.waitForTimeout(2000);
-          break; // Exit loop after finding comments and navigating
+          break;
         }
       }
     }
   }
 
-  // Optional: Add an assertion to verify navigation
-  await expect(this.page).toHaveURL(/\/.+/); // Ensure URL has changed from homepage
+  await expect(this.page).toHaveURL(/\/.+/);
 });
 
 Then('I should see the comment section', {timeout: 2 * 20000}, async function (this: CustomWorld) {
@@ -86,7 +85,7 @@ Then('The comment input field should be disabled and I should not be able to pos
 
 });
 
-Given('I find and click the sign-in button and Log in as {string}', {timeout: 2 * 20000}, async function (this: CustomWorld, userTypeString: string) {
+Then('I find and click the sign-in button and Log in as {string}', {timeout: 2 * 20000}, async function (this: CustomWorld, userTypeString: string) {
   const page = this.page;
   if (!page) {
     throw new Error('Page is not initialized');
