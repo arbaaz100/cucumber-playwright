@@ -1,0 +1,26 @@
+{
+  "default": {
+    "formatOptions": {
+      "snippetInterface": "async-await"
+    },
+    "publishQuiet": true,
+    "dryRun": false,
+    "paths": [
+      "src/test/features/"
+    ],
+    "require": [
+      "src/test/steps/*.ts",
+      "src/fixtures/hooks.ts"
+    ],
+    "format": [
+      "progress-bar",
+      "json:reports/cucumber-report.json",
+      "html:reports/cucumber-report.html"
+    ],
+    "requireModule": [
+      "ts-node/register"
+    ],
+    "timeout": 60000,
+    "tags": "@automated"
+  }
+}
